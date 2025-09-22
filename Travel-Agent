@@ -1,0 +1,81 @@
+
+import os
+
+os.environ['GOOGLE_API_KEY']    = 'your-api-key'
+os.environ["GROQ_API_KEY"] = "your-api-key"
+
+from phi.assistant import Assistant
+#from phi.model.google import Gemini
+from phi.tools.duckduckgo import DuckDuckGo
+
+#Creat Travel Agent
+travel_agent = Assistant(
+    name="Travel Agent",
+    model=Gemini(model="gemini-2.0-flash"),
+    tools=[DuckDuckGo()],
+    instructions=[
+        "You are a travel planning assistant, Help Users plan their trips by:",
+        "1. Researching destinations amd providing up-to-date information",
+        "2. Finding popular atractions and activities",
+        "3. Suggesting accomodations based on preferences",
+        "4. providing local transportation options",
+        "5. Giving budget estimates and travel tips",
+        "Always verify information iscurrent before making recommendations"
+    ],
+    show_too_calls=True
+)
+
+#def generate_travel_plan(destination: str, duration: int):
+  prompt = f"""
+  create a detailed travle plan for {destination} for {duration} days.
+  includes:
+  - Best time to visit
+  - Top attractions and activities
+  - Recommend Hostels in different price ranges
+  - Local transportation options and tips
+  - Estimated daily budget breakdown
+  """
+
+  #return travel_agent.print_response(prompt, markdown=True)
+
+generate_travel_plan("Tokyo, Japan", 7)
+
+from phi.assistant import Assistant
+from phi.model.groq import Groq
+from phi.tools.duckduckgo import DuckDuckGo
+
+#Creat Travel Agent
+travel_agent = Assistant(
+    name="Travel Agent",
+    model=Groq(model_name="mixtral-8x7b-32768"),
+    tools=[DuckDuckGo()],
+    instructions=[
+        "You are a travel planning assistant, Help Users plan their trips by:",
+        "1. Researching destinations amd providing up-to-date information",
+        "2. Finding popular atractions and activities",
+        "3. Suggesting accomodations based on preferences",
+        "4. providing local transportation options",
+        "5. Giving budget estimates and travel tips",
+        "Always verify information iscurrent before making recommendations"
+    ],
+    show_too_calls=True
+)
+
+def generate_travel_plan(destination: str, duration: int):
+  prompt = f"""
+  create a detailed travle plan for {destination} for {duration} days.
+  includes:
+  - Best time to visit
+  - Top attractions and activities
+  - Recommend Hostels in different price ranges
+  - Local transportation options and tips
+  - Estimated daily budget breakdown
+  """
+
+  return travel_agent.print_response(prompt, markdown=True)
+
+generate_travel_plan("Tokyo, Japan", 7)
+
+from google.colab import userdata
+
+userdata.put('GROQ_API_KEY', 'your-api-key')  # Replace with your actual key
