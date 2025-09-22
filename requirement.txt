@@ -1,0 +1,2 @@
+phidata==2.4.36
+google-colab==1.0.0
